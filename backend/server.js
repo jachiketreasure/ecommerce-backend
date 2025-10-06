@@ -5,14 +5,16 @@ import authRoutes from "./routes/auth.js";
 import orderRoutes from "./routes/orders.js";
 import cors from "cors";
 import path from "path";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
 
 dotenv.config();
-
-const __filename= fileURLToPath(import.meta.url);
-const __dirname= path.dirname(__filename);
-
+console.log("🧩 Mongo URI:", process.env.MONGO_URI);
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const app = express();
+const PORT = process.env.PORT || 8000;
 
 
 app.use(express.json());
@@ -68,9 +70,9 @@ app.get("/", (req, res) => {
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+app.get(/.*/, (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
-const PORT = process.env.PORT || 8000;
+
 app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
