@@ -1,15 +1,17 @@
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import authRoutes from "./routes/auth.js";
-import orderRoutes from "./routes/orders.js";
 import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 
+import authRoutes from "./routes/auth.js";
+import orderRoutes from "./routes/orders.js";
+
+
 dotenv.config();
-console.log("🧩 Mongo URI:", process.env.MONGO_URI);
+console.log(" Mongo URI:", process.env.MONGO_URI);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
@@ -19,9 +21,10 @@ const PORT = process.env.PORT || 8000;
 
 app.use(express.json());
 app.use(cors({
-origin: "http://localhost:5173",
-methods: ["GET", "POST", "PUT", "DELETE"],
-credentials: true
+  origin: ["http://localhost:5173", "http://localhost:3000"],
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+  credentials: true,
+  allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
 
@@ -29,8 +32,11 @@ mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
-.then(() => console.log("✅ MongoDB Connected"))
-.catch(err => console.error("❌ MongoDB Error:", err));
+.then(() => console.log("✅ MongoDB Connected successfully"))
+.catch(err => {
+  console.error("❌ MongoDB Connection Error:", err.message);
+  console.log("💡 Make sure MongoDB is running on your system");
+});
 
 // Routes
 app.use("/api/auth", authRoutes);
@@ -38,10 +44,11 @@ app.use("/api/orders", orderRoutes);
 
 
 const productSchema = new mongoose.Schema({
-  name: String,
-  price: Number,
-  description: String
+  name: { type: String, required: true },
+  price: { type: Number, required: true },
+  description: { type: String }
 });
+
 const Product = mongoose.model("Product", productSchema);
 
 app.post("/api/products", async (req, res) => {
