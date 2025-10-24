@@ -95,7 +95,7 @@ export default function Navbar() {
         </div>
 
         <div className="iconss fs-5 d-flex gap-3">
-          <i className="fa-solid fa-magnifying-glass"></i>
+          {isAuthenticated && <i className="fa-solid fa-magnifying-glass"></i>}
           <i className="fa-regular fa-heart"></i>
       {isAuthenticated && (
         <div className="position-relative">
