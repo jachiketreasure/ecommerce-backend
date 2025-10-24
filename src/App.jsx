@@ -20,8 +20,11 @@ import MensProducts from './components/MensProducts/MensProducts';
 import WomensProducts from './components/WomenProducts/WomenProducts';
 import CartPage from './components/Pages/CartPage/CartPage';
 import ProtectedRoute from './components/ProtectedRoute';
+import { useAuth } from './context/AuthContext';
 
 function App() {
+  const { isAuthenticated } = useAuth();
+  
   return (
     <>
       <Routes>
@@ -37,7 +40,7 @@ function App() {
         {/* Catch-all route for SPA routing */}
         <Route path="*" element={<Home />} />
       </Routes> 
-      <Footer/>
+      {isAuthenticated && <Footer/>}
     </>
   );
 }
