@@ -98,17 +98,31 @@ body {
 }
 
 .Login .formm .buttons .btn-one {
-    
     text-align: center;
     color: white;
-    background-color: black;
-    border: 1px solid black;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: 2px solid #667eea;
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+    transition: all 0.3s ease;
+}
+
+.Login .formm .buttons .btn-one:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 25px rgba(102, 126, 234, 0.4);
 }
 
 .Login .formm .buttons .btn-two {
     text-align: center;
-    border: 1px solid black;
-    color: black !important;
+    border: 2px solid #667eea;
+    color: #667eea !important;
+    background: transparent;
+    transition: all 0.3s ease;
+}
+
+.Login .formm .buttons .btn-two:hover {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white !important;
+    border-color: #667eea;
 }
 
 
