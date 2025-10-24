@@ -85,11 +85,12 @@ export default function Navbar() {
             <>
              <Link className="login-link mx-1" to="/Login">Login</Link>
              <Link className="register-link mx-1" to="/Register">Register</Link>
-
-
             </>
           ) : (
-            <button className="btn btn-link mx-1" onClick={handleLogout}>Logout</button>
+            <div className="d-flex align-items-center gap-2">
+              <span className="user-welcome">Welcome, {user?.firstName || 'User'}!</span>
+              <button className="logout-link mx-1" onClick={handleLogout}>Logout</button>
+            </div>
           )}
         </div>
 
