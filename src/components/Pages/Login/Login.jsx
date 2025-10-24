@@ -28,6 +28,7 @@ export default function Login() {
                 return;
             }
 
+            console.log('Attempting login to:', `${BASE}/api/auth/login`);
             const response = await axios.post(`${BASE}/api/auth/login`, { email, password });
 
             if (response.status === 200) {
@@ -36,11 +37,16 @@ export default function Login() {
             }
         } catch (error) {
             console.error('Login error:', error);
+            console.log("Full error object:", error);
             
             if (error.response && error.response.data && error.response.data.message) {
                 setError(error.response.data.message);
-            } else if (error.code === 'ECONNREFUSED') {
-                setError('Unable to connect to server. Please check if the backend is running.');
+            } else if (error.response && error.response.status === 401) {
+                setError("Invalid email or password. Please try again.");
+            } else if (error.code === 'ECONNREFUSED' || error.message.includes('Network Error')) {
+                setError('Unable to connect to server. Please check your internet connection and try again.');
+            } else if (error.message.includes('CORS')) {
+                setError('Server configuration error. Please contact support.');
             } else {
                 setError('An error occurred. Please try again.');
             }

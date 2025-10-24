@@ -61,6 +61,7 @@ export default function Register() {
         };
 
         try {
+            console.log('Attempting registration to:', `${BASE}/api/auth/register`);
             const res = await axios.post(`${BASE}/api/auth/register`, userData);
             
             if (res.status === 201) {
@@ -69,11 +70,16 @@ export default function Register() {
             }
         } catch (error) {
             console.error("Registration error:", error);
+            console.log("Full error object:", error);
             
             if (error.response && error.response.data && error.response.data.message) {
                 setError(error.response.data.message);
-            } else if (error.code === 'ECONNREFUSED') {
-                setError('Unable to connect to server. Please check if the backend is running.');
+            } else if (error.response && error.response.status === 400) {
+                setError("Invalid registration data. Please check all fields.");
+            } else if (error.code === 'ECONNREFUSED' || error.message.includes('Network Error')) {
+                setError('Unable to connect to server. Please check your internet connection and try again.');
+            } else if (error.message.includes('CORS')) {
+                setError('Server configuration error. Please contact support.');
             } else {
                 setError("An error occurred. Please try again.");
             }
